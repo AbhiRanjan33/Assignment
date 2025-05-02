@@ -2,13 +2,18 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 const cors = require("cors");
 
+require('dotenv').config({ path: '.env' });
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-const uri =
-  "mongodb+srv://ranjanabhi2468:mExaWmq0pqSjptOU@doctors.58lxyp8.mongodb.net/?retryWrites=true&w=majority&appName=doctors";
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+  console.error('Error: MONGODB_URI is not defined in .env.local');
+  process.exit(1);
+}
 const client = new MongoClient(uri);
 
 let doctorsCollection;
